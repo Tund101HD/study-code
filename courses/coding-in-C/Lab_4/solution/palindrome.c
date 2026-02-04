@@ -29,7 +29,7 @@ int main()
     for (int i = 0; i < floor(len_palindrome / 2); i++)
     {
 
-        // case sensitive comparision
+        // case sensitive comparision FIXME this is quite bad.
         if (palindrome[i] != palindrome[len_palindrome - i - 1])
         {
             p_result_msg = "is not a palindrome.";
