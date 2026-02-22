@@ -1,0 +1,4 @@
+﻿INPUT = courses/coding-in-C/Lab_7/include \
+        courses/coding-in-C/Lab_7/src
+
+FILE_PATTERNS = *.h *.c
