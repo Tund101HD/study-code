@@ -45,7 +45,15 @@ Both `Member` and `Librarian` carry a `name` attribute. The absence of a shared 
 
 ## Corrected Design
 
-```mermaid
+```mermaid---
+config:
+  layout: elk
+  elk:
+    nodePlacement.strategy: NETWORK_SIMPLEX
+    spacing.nodeNode: 80
+    spacing.edgeNode: 60
+    spacing.edgeEdge: 40
+---
 classDiagram
     direction TB
 
