@@ -44,13 +44,11 @@ The system continuously reads data from different sensors:
 * humidity sensors
 * water level sensors
 
-Normal user input errors should be handled with regular validation logic.
-
-However, some situations indicate severe system problems and should therefore be handled using exceptions:
+Some situations indicate severe system problems and should therefore be handled using exceptions:
 
 * a sensor becomes unreachable
 * physically impossible measurements are received
-* a sensor configuration is corrupted
+* a sensor configuration is corrupted (i.e. minimum limits > maximum limits)
 * irrigation is activated although no water is available
 
 The system should use exceptions to detect and handle these exceptional situations.
@@ -88,6 +86,8 @@ Examples:
 ### Testing Exceptions in `main()`
 
 Create three sensors to measure the above mentioned states and intentionally trigger invalid situations.
+
+Use catch blocks directly after the try statements in the main with a ```std::exception``` parameter.
 Use the what-method to output the catched exception.
 
 ---
@@ -96,32 +96,7 @@ Use the what-method to output the catched exception.
 
 Extend your program so that different exception types are handled separately.
 
-Example:
-
-```cpp
-try
-{
-    humidity_sensor.update_value(250);
-}
-catch (const std::invalid_argument& error)
-{
-    std::cout << "Configuration error: "
-              << error.what()
-              << std::endl;
-}
-catch (const std::out_of_range& error)
-{
-    std::cout << "Impossible sensor value: "
-              << error.what()
-              << std::endl;
-}
-catch (const std::exception& error)
-{
-    std::cout << "General error: "
-              << error.what()
-              << std::endl;
-}
-```
+Also, all catch-statements should be located together - not being called directly after a try-block.
 
 Discuss why the order of `catch` blocks matters.
 
@@ -129,112 +104,27 @@ Discuss why the order of `catch` blocks matters.
 
 ## Part 3 – Moderate: Custom Exception Classes
 
-Create a custom exception class:
+Create a custom exception class called __SensorFailureError__ representing a specialized form of a runtime error.
 
-```cpp
-class SensorFailureError : public std::runtime_error
-{
-public:
-    SensorFailureError()
-        : std::runtime_error("Sensor is unreachable")
-    {
-    }
-};
-```
+It should return the error message ```Sensor is unreachable```.
 
-Add a method:
+Then add a method:
 
 ```cpp
 simulate_failure()
 ```
 
 This method should throw `SensorFailureError`.
-
-Example:
-
-```cpp
-void Sensor::simulate_failure()
-{
-    throw SensorFailureError();
-}
-```
-
-Catch this exception separately in `main()`.
-
-Example:
-
-```cpp
-try
-{
-    sensor.simulate_failure();
-}
-catch (const SensorFailureError& error)
-{
-    std::cout << error.what()
-              << std::endl;
-}
-```
-
----
-
-## Part 4 – Complex: Greenhouse Controller
-
-Create a class `GreenhouseController`.
-
-The class should manage multiple sensors.
-
-Add methods:
-
-1. `add_sensor(...)`
-2. `read_sensor(...)`
-3. `check_system_status()`
-4. `activate_irrigation()`
-
-Rules:
-
-* invalid sensor indices should throw `std::out_of_range`
-* sensor failures should propagate through the system
-* irrigation activation without water should throw `std::runtime_error`
-* severe sensor errors should not be silently ignored
-
-Handle exceptions at the application level in `main()`.
-
-Example:
-
-```cpp
-try
-{
-    controller.activate_irrigation();
-}
-catch (const std::runtime_error& error)
-{
-    std::cout << error.what()
-              << std::endl;
-}
-```
-
----
-
-## Requirements
-
-Your solution must contain:
-
-1. at least three different standard exceptions
-2. at least one custom exception class
-3. multiple `catch` blocks
-4. exception propagation across multiple function calls
-5. exceptions caught as `const` reference
-6. no integer error codes
+Catch this exception in `main()`.
 
 ---
 
 ## Reflection Questions
 
 1. Why are exceptions preferable to integer error codes in this system?
-2. Which situations in this exercise are truly exceptional?
-3. Why should exceptions usually be caught by `const` reference?
-4. What is the difference between `std::invalid_argument`, `std::runtime_error`, and `std::out_of_range`?
-5. When should custom exception classes be used?
-6. Why should `catch (const std::exception& e)` usually appear after more specific `catch` blocks?
-7. Why should exceptions not be used for normal control flow?
-8. What happens if an exception is never caught?
+2. Why should exceptions usually be caught by `const` reference?
+3. What is the difference between `std::invalid_argument`, `std::runtime_error`, and `std::out_of_range`?
+4. When should custom exception classes be used?
+5. Why should `catch (const std::exception& e)` usually appear after more specific `catch` blocks?
+6. Why should exceptions not be used for normal control flow?
+7. What happens if an exception is never caught?
