@@ -98,3 +98,74 @@ The class should contain:
 - a method to print the adjacency list to the console
 
 Create an object in main representing the graph shown in the image above in section IV.
+
+---
+
+## 🟡 Section V: Shortest Path with Dijkstra
+
+In this section, you will extend your adjacency list implementation and use it to find the shortest path between two vertices.
+
+Dijkstra's algorithm is used to find the shortest path from one start vertex to all other vertices in a weighted graph. The algorithm works step by step by always selecting the currently unvisited vertex with the smallest known distance.
+
+## Task Description
+
+Extend your existing class `AdjacencyList` from Section IV.
+
+Use the following graph:
+
+![Graph example with weights](graphWeighted.svg)
+
+Interpret the characters A, B, C, D as 0, 1, 2, 3.
+
+The class should contain:
+- a vector container representing a weighted adjacency list
+- a method to add weighted edges between vertices
+- a method `findShortestPath(int start, int destination)`
+- a method to print the shortest path and its total distance
+
+The method `findShortestPath` should:
+- take a starting vertex and a destination vertex
+- calculate the shortest path using Dijkstra's algorithm
+- return the vertices of the shortest path including start and destination
+- also calculate the total distance of the shortest path
+
+Use the following simplifications:
+- assume that all edge weights are positive
+- assume that the graph is undirected
+
+Create an object in `main` representing the graph shown in the image above.
+
+Test your implementation with at least two different start and destination vertices.
+
+Answer as comment in the code:
+* Why is Dijkstra more efficient than calculating all possible paths?
+* Why does Dijkstra require non-negative edge weights?
+
+---
+
+## 🔴 Section VI: Navigation software
+
+In this section, you will implement an algorithm for a navigation system. You practice and apply all the know-how gathered in the sections above.
+
+## Task Description
+
+Given is the graph below representing various citites of Germany:
+
+![Graph of German cities](graphGermany.svg)
+
+Implement an algorithm which:
+* takes a starting point and a destination
+* calculates all possible routes between two given cities
+* selects the shortest route
+* returns a list of all vertices of the shortest route including start- and endpoint
+
+Consider OOP for creating your algorithm and your data structure.
+Start by creating an UML class diagram for your program.
+
+Hint: Represent the cities not as strings but as numbers. E.g.:
+
+Frankfurt a.M. = 0
+
+Koeln = 1
+
+...
